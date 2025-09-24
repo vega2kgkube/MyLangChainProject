@@ -4,14 +4,15 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+UPSTAGE_API_KEY = os.getenv("UPSTAGE_API_KEY")
+print(UPSTAGE_API_KEY[30:])
 
 # API 키 검증
-if not OPENAI_API_KEY:
-    raise ValueError("OPENAI_API_KEY가 설정되지 않았습니다. .env 파일을 확인해주세요.")
+if not UPSTAGE_API_KEY:
+    raise ValueError("UPSTAGE_API_KEY가 설정되지 않았습니다. .env 파일을 확인해주세요.")
 
 # langchain 패키지
-from langchain_openai import ChatOpenAI
+from langchain_upstage import UpstageEmbeddings, ChatUpstage
 from langchain_core.prompts import ChatPromptTemplate
 import gradio as gr
 
