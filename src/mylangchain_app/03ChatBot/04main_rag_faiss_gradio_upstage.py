@@ -81,14 +81,14 @@ def retrieve_and_generate_answers(vectorstore, message, temperature=0.5):
         )
 
         # 한국어에 최적화된 프롬프트
-        template = '''다음 문맥을 바탕으로 질문에 정확하게 답변해주세요. 
+        system_template = '''다음 문맥을 바탕으로 질문에 정확하게 답변해주세요. 
         문맥에서 관련 정보를 찾을 수 없다면, "제공된 문서에서 해당 정보를 찾을 수 없습니다"라고 답변해주세요.
 
         <문맥>
         {context}
         </문맥>
 
-        질문: {input}
+        질문: {question}
 
         답변 규칙:
         1. 문서 내용만을 근거로 답변하세요
@@ -98,7 +98,10 @@ def retrieve_and_generate_answers(vectorstore, message, temperature=0.5):
 
         답변:'''
 
-        prompt = ChatPromptTemplate.from_template(template)
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", system_template),
+            ("human", "{question}")
+        ])
 
         # ChatModel 인스턴스 생성
         model = ChatUpstage(
@@ -114,7 +117,7 @@ def retrieve_and_generate_answers(vectorstore, message, temperature=0.5):
         rag_chain = create_retrieval_chain(retriever, document_chain)
 
         # 검색 결과를 바탕으로 답변 생성
-        response = rag_chain.invoke({'input': message})
+        response = rag_chain.invoke({'question': message})
 
         return response['answer']
         
