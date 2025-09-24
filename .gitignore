@@ -1,2 +1,2 @@
 .env
-01RAG/faiss_index/**
+db/**
