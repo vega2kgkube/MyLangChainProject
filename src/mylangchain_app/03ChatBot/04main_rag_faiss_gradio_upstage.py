@@ -72,7 +72,7 @@ def load_pdf_to_vector_store(pdf_file, chunk_size=1000, chunk_overlap=100):
 
 
 # 벡터 저장소에서 문서를 검색하고 답변을 생성
-def retrieve_and_generate_answers(vectorstore, message, temperature=0):
+def retrieve_and_generate_answers(vectorstore, message, temperature=0.5):
     try:
         # 검색 성능 향상을 위한 retriever 설정
         retriever = vectorstore.as_retriever(
@@ -104,7 +104,7 @@ def retrieve_and_generate_answers(vectorstore, message, temperature=0):
         model = ChatUpstage(
                 model="solar-pro",
                 base_url="https://api.upstage.ai/v1",
-                temperature=0.5
+                temperature=float(temperature),
         )
 
         # Prompt와 ChatModel을 Chain으로 연결
