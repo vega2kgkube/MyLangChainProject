@@ -20,7 +20,6 @@ import gradio as gr
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 
@@ -55,7 +54,7 @@ def load_pdf_to_vector_store(pdf_file, chunk_size=1000, chunk_overlap=100):
         print(f"총 {len(splits)}개 청크로 분할됨")
 
         # 임베딩 모델 생성
-        embeddings = OpenAIEmbeddings(api_key=OPENAI_API_KEY, model="text-embedding-3-small")
+        embeddings = UpstageEmbeddings(model="solar-embedding-1-large")
         
         # FAISS 벡터 저장소 생성 (배치 처리 불필요)
         print("FAISS 벡터 저장소 생성 중...")
