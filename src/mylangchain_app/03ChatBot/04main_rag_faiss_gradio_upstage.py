@@ -223,7 +223,10 @@ def create_interface():
             )
             
             # 채팅 히스토리에 추가
-            chat_history.append((message, bot_message))
+            #chat_history.append((message, bot_message))
+            chat_history.append({"role": "user", "content": message})  # 사용자 메시지 추가
+            chat_history.append({"role": "assistant", "content": bot_message})  # 봇 응답 추가
+
             return chat_history, ""
         
         # 버튼 이벤트 연결
