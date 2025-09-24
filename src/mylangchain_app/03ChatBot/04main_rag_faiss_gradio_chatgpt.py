@@ -12,7 +12,7 @@ if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY가 설정되지 않았습니다. .env 파일을 확인해주세요.")
 
 # langchain 패키지
-from langchain_upstage import UpstageEmbeddings, ChatUpstage
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 import gradio as gr
 
@@ -54,7 +54,7 @@ def load_pdf_to_vector_store(pdf_file, chunk_size=1000, chunk_overlap=100):
         print(f"총 {len(splits)}개 청크로 분할됨")
 
         # 임베딩 모델 생성
-        embeddings = UpstageEmbeddings(model="solar-embedding-1-large")
+        embeddings = OpenAIEmbeddings(api_key=OPENAI_API_KEY, model="text-embedding-3-small")
         
         # FAISS 벡터 저장소 생성 (배치 처리 불필요)
         print("FAISS 벡터 저장소 생성 중...")
@@ -104,10 +104,10 @@ def retrieve_and_generate_answers(vectorstore, message, temperature=0.5):
         ])
 
         # ChatModel 인스턴스 생성
-        model = ChatUpstage(
-                model="solar-pro",
-                base_url="https://api.upstage.ai/v1",
-                temperature=float(temperature),
+        model = ChatOpenAI(
+            model='gpt-4o-mini', 
+            temperature=float(temperature),
+            api_key=OPENAI_API_KEY
         )
 
         # Prompt와 ChatModel을 Chain으로 연결
