@@ -82,23 +82,29 @@ def retrieve_and_generate_answers(vectorstore, message, temperature=0):
 
         # 한국어에 최적화된 프롬프트
         template = '''다음 문맥을 바탕으로 질문에 정확하게 답변해주세요. 
-문맥에서 관련 정보를 찾을 수 없다면, "제공된 문서에서 해당 정보를 찾을 수 없습니다"라고 답변해주세요.
+        문맥에서 관련 정보를 찾을 수 없다면, "제공된 문서에서 해당 정보를 찾을 수 없습니다"라고 답변해주세요.
 
-<문맥>
-{context}
-</문맥>
+        <문맥>
+        {context}
+        </문맥>
 
-질문: {input}
+        질문: {input}
 
-답변:'''
+        답변 규칙:
+        1. 문서 내용만을 근거로 답변하세요
+        2. 단계별 설명이 필요하면 순서대로 작성하세요  
+        3. 구체적인 메뉴명, 버튼명을 포함하세요
+        4. 문서에 없는 정보는 "문서에서 찾을 수 없습니다"라고 하세요
+
+        답변:'''
 
         prompt = ChatPromptTemplate.from_template(template)
 
         # ChatModel 인스턴스 생성
-        model = ChatOpenAI(
-            model='gpt-3.5-turbo', 
-            temperature=float(temperature),
-            api_key=OPENAI_API_KEY
+        model = ChatUpstage(
+                model="solar-pro",
+                base_url="https://api.upstage.ai/v1",
+                temperature=0.5
         )
 
         # Prompt와 ChatModel을 Chain으로 연결
