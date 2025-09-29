@@ -1,2 +1,3 @@
 .env
-db/**
+src/mylangchain_app/db/**
+src/mylangchain_app/연습문제/problem4-1_카페메뉴Tool.ipynb
